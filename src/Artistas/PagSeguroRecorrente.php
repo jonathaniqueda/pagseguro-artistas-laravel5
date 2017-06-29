@@ -63,23 +63,23 @@ class PagSeguroRecorrente extends PagSeguroClient
     public function sendPreApprovalRequest(array $preApprovalRequest)
     {
         $preApprovalRequest = [
-            'email'                             => $this->email,
-            'token'                             => $this->token,
-            'preApprovalName'                   => $this->sanitize($preApprovalRequest, 'preApprovalName'),
-            'preApprovalCharge'                 => $this->sanitize($preApprovalRequest, 'preApprovalCharge'),
-            'preApprovalPeriod'                 => $this->sanitize($preApprovalRequest, 'preApprovalPeriod'),
-            'preApprovalCancelUrl'              => $this->sanitize($preApprovalRequest, 'preApprovalCancelUrl'),
-            'preApprovalAmountPerPayment'       => $this->sanitizeMoney($preApprovalRequest, 'preApprovalAmountPerPayment'),
-            'preApprovalMembershipFee'          => $this->sanitizeMoney($preApprovalRequest, 'preApprovalMembershipFee'),
-            'preApprovalTrialPeriodDuration'    => $this->sanitizeNumber($preApprovalRequest, 'preApprovalTrialPeriodDuration'),
-            'preApprovalExpirationValue'        => $this->sanitizeNumber($preApprovalRequest, 'preApprovalExpirationValue'),
-            'preApprovalExpirationUnit'         => $this->sanitize($preApprovalRequest, 'preApprovalExpirationUnit'),
-            'maxUses'                           => $this->sanitizeNumber($preApprovalRequest, 'maxUses'),
+            'email' => $this->email,
+            'token' => $this->token,
+            'preApprovalName' => $this->sanitize($preApprovalRequest, 'preApprovalName'),
+            'preApprovalCharge' => $this->sanitize($preApprovalRequest, 'preApprovalCharge'),
+            'preApprovalPeriod' => $this->sanitize($preApprovalRequest, 'preApprovalPeriod'),
+            'preApprovalCancelUrl' => $this->sanitize($preApprovalRequest, 'preApprovalCancelUrl'),
+            'preApprovalAmountPerPayment' => $this->sanitizeMoney($preApprovalRequest, 'preApprovalAmountPerPayment'),
+            'preApprovalMembershipFee' => $this->sanitizeMoney($preApprovalRequest, 'preApprovalMembershipFee'),
+            'preApprovalTrialPeriodDuration' => $this->sanitizeNumber($preApprovalRequest, 'preApprovalTrialPeriodDuration'),
+            'preApprovalExpirationValue' => $this->sanitizeNumber($preApprovalRequest, 'preApprovalExpirationValue'),
+            'preApprovalExpirationUnit' => $this->sanitize($preApprovalRequest, 'preApprovalExpirationUnit'),
+            'maxUses' => $this->sanitizeNumber($preApprovalRequest, 'maxUses'),
         ];
 
         $this->validatePreApprovalRequest($preApprovalRequest);
 
-        return (string) $this->sendTransaction($preApprovalRequest, $this->url['preApprovalRequest'])->code;
+        return (string)$this->sendTransaction($preApprovalRequest, $this->url['preApprovalRequest'])->code;
     }
 
     /**
@@ -90,15 +90,15 @@ class PagSeguroRecorrente extends PagSeguroClient
     private function validatePreApprovalRequest(array $preApprovalRequest)
     {
         $rules = [
-            'preApprovalName'                   => 'required',
-            'preApprovalCharge'                 => 'required',
-            'preApprovalPeriod'                 => 'required',
-            'preApprovalCancelUrl'              => 'url',
-            'preApprovalAmountPerPayment'       => 'required|numeric|between:1.00,2000.00',
-            'preApprovalMembershipFee'          => 'numeric|between:0.00,1000000.00',
-            'preApprovalTrialPeriodDuration'    => 'integer|between:1,1000000',
-            'preApprovalExpirationValue'        => 'integer|between:1,1000000',
-            'maxUses'                           => 'integer|between:1,1000000',
+            'preApprovalName' => 'required',
+            'preApprovalCharge' => 'required',
+            'preApprovalPeriod' => 'required',
+            'preApprovalCancelUrl' => 'url',
+            'preApprovalAmountPerPayment' => 'required|numeric|between:1.00,2000.00',
+            'preApprovalMembershipFee' => 'numeric|between:0.00,1000000.00',
+            'preApprovalTrialPeriodDuration' => 'integer|between:1,1000000',
+            'preApprovalExpirationValue' => 'integer|between:1,1000000',
+            'maxUses' => 'integer|between:1,1000000',
         ];
 
         $this->validate($preApprovalRequest, $rules);
@@ -160,14 +160,14 @@ class PagSeguroRecorrente extends PagSeguroClient
         $senderPhone = $this->sanitizeNumber($senderInfo, 'senderPhone');
 
         $senderInfo = [
-            'name'           => $this->sanitize($senderInfo, 'senderName'),
-            'email'          => $senderEmail,
-            'ip'             => $this->sanitize($senderInfo, 'senderIp'),
-            'hash'           => $this->checkValue($senderInfo, 'senderHash'),
+            'name' => $this->sanitize($senderInfo, 'senderName'),
+            'email' => $senderEmail,
+            'ip' => $this->sanitize($senderInfo, 'senderIp'),
+            'hash' => $this->checkValue($senderInfo, 'senderHash'),
             'senderAreaCode' => substr($senderPhone, 0, 2),
-            'senderPhone'    => substr($senderPhone, 2),
-            'senderCNPJ'     => $this->sanitizeNumber($senderInfo, 'senderCNPJ'),
-            'senderCPF'      => $this->sanitizeNumber($senderInfo, 'senderCPF'),
+            'senderPhone' => substr($senderPhone, 2),
+            'senderCNPJ' => $this->sanitizeNumber($senderInfo, 'senderCNPJ'),
+            'senderCPF' => $this->sanitizeNumber($senderInfo, 'senderCPF'),
         ];
 
         $this->validateSenderInfo($senderInfo);
@@ -184,14 +184,14 @@ class PagSeguroRecorrente extends PagSeguroClient
     private function validateSenderInfo(array $senderInfo)
     {
         $rules = [
-          'name'           => 'required|max:50',
-          'ip'             => 'ip',
-          'senderAreaCode' => 'required|digits:2',
-          'senderPhone'    => 'required|digits_between:8,9',
-          'email'          => 'required|email|max:60',
-          'hash'           => 'required',
-          'senderCPF'      => 'required_without:senderCNPJ|digits:11',
-          'senderCNPJ'     => 'required_without:senderCPF|digits:14',
+            'name' => 'required|max:50',
+            'ip' => 'ip',
+            'senderAreaCode' => 'required|digits:2',
+            'senderPhone' => 'required|digits_between:8,9',
+            'email' => 'required|email|max:60',
+            'hash' => 'required',
+            'senderCPF' => 'required_without:senderCNPJ|digits:11',
+            'senderCNPJ' => 'required_without:senderCPF|digits:14',
         ];
 
         $this->validate($senderInfo, $rules);
@@ -209,11 +209,11 @@ class PagSeguroRecorrente extends PagSeguroClient
         $cardHolderPhone = $this->sanitizeNumber($creditCardHolder, 'creditCardHolderPhone');
 
         $creditCardHolder = [
-          'name'                          => $this->fallbackValue($this->sanitize($creditCardHolder, 'creditCardHolderName'), $this->senderInfo, 'name'),
-          'creditCardHolderAreaCode'      => $this->fallbackValue(substr($cardHolderPhone, 0, 2), $this->senderInfo, 'senderAreaCode'),
-          'creditCardHolderPhone'         => $this->fallbackValue(substr($cardHolderPhone, 2), $this->senderInfo, 'senderPhone'),
-          'creditCardHolderCPF'           => $this->fallbackValue($this->sanitizeNumber($creditCardHolder, 'creditCardHolderCPF'), $this->senderInfo, 'senderCPF'),
-          'birthDate'                     => $this->sanitize($creditCardHolder, 'creditCardHolderBirthDate'),
+            'name' => $this->fallbackValue($this->sanitize($creditCardHolder, 'creditCardHolderName'), $this->senderInfo, 'name'),
+            'creditCardHolderAreaCode' => $this->fallbackValue(substr($cardHolderPhone, 0, 2), $this->senderInfo, 'senderAreaCode'),
+            'creditCardHolderPhone' => $this->fallbackValue(substr($cardHolderPhone, 2), $this->senderInfo, 'senderPhone'),
+            'creditCardHolderCPF' => $this->fallbackValue($this->sanitizeNumber($creditCardHolder, 'creditCardHolderCPF'), $this->senderInfo, 'senderCPF'),
+            'birthDate' => $this->sanitize($creditCardHolder, 'creditCardHolderBirthDate'),
         ];
 
         $this->validateCreditCardHolder($creditCardHolder);
@@ -230,11 +230,11 @@ class PagSeguroRecorrente extends PagSeguroClient
     private function validateCreditCardHolder(array $creditCardHolder)
     {
         $rules = [
-          'name'                         => 'required|max:50',
-          'creditCardHolderAreaCode'     => 'required|digits:2',
-          'creditCardHolderPhone'        => 'required|digits_between:8,9',
-          'creditCardHolderCPF'          => 'required|digits:11',
-          'birthDate'                    => 'required',
+            'name' => 'required|max:50',
+            'creditCardHolderAreaCode' => 'required|digits:2',
+            'creditCardHolderPhone' => 'required|digits_between:8,9',
+            'creditCardHolderCPF' => 'required|digits:11',
+            'birthDate' => 'required',
         ];
 
         $this->validate($creditCardHolder, $rules);
@@ -250,14 +250,14 @@ class PagSeguroRecorrente extends PagSeguroClient
     public function setSenderAddress(array $senderAddress)
     {
         $senderAddress = [
-          'street'     => $this->sanitize($senderAddress, 'senderAddressStreet'),
-          'number'     => $this->sanitize($senderAddress, 'senderAddressNumber'),
-          'complement' => $this->sanitize($senderAddress, 'senderAddressComplement'),
-          'district'   => $this->sanitize($senderAddress, 'senderAddressDistrict'),
-          'postalCode' => $this->sanitizeNumber($senderAddress, 'senderAddressPostalCode'),
-          'city'       => $this->sanitize($senderAddress, 'senderAddressCity'),
-          'state'      => strtoupper($this->checkValue($senderAddress, 'senderAddressState')),
-          'country'    => 'BRA',
+            'street' => $this->sanitize($senderAddress, 'senderAddressStreet'),
+            'number' => $this->sanitize($senderAddress, 'senderAddressNumber'),
+            'complement' => $this->sanitize($senderAddress, 'senderAddressComplement'),
+            'district' => $this->sanitize($senderAddress, 'senderAddressDistrict'),
+            'postalCode' => $this->sanitizeNumber($senderAddress, 'senderAddressPostalCode'),
+            'city' => $this->sanitize($senderAddress, 'senderAddressCity'),
+            'state' => strtoupper($this->checkValue($senderAddress, 'senderAddressState')),
+            'country' => 'BRA',
         ];
 
         $this->validateSenderAddress($senderAddress);
@@ -274,13 +274,13 @@ class PagSeguroRecorrente extends PagSeguroClient
     private function validateSenderAddress(array $senderAddress)
     {
         $rules = [
-          'street'     => 'required|max:80',
-          'number'     => 'required|max:20',
-          'complement' => 'max:40',
-          'district'   => 'required|max:60',
-          'postalCode' => 'required|digits:8',
-          'city'       => 'required|min:2|max:60',
-          'state'      => 'required|min:2|max:2',
+            'street' => 'required|max:80',
+            'number' => 'required|max:20',
+            'complement' => 'max:40',
+            'district' => 'required|max:60',
+            'postalCode' => 'required|digits:8',
+            'city' => 'required|min:2|max:60',
+            'state' => 'required|min:2|max:2',
         ];
 
         $this->validate($senderAddress, $rules);
@@ -296,14 +296,14 @@ class PagSeguroRecorrente extends PagSeguroClient
     public function setBillingAddress(array $billingAddress)
     {
         $billingAddress = [
-          'street'     => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressStreet'), $this->senderAddress, 'street'),
-          'number'     => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressNumber'), $this->senderAddress, 'number'),
-          'complement' => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressComplement'), $this->senderAddress, 'complement'),
-          'district'   => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressDistrict'), $this->senderAddress, 'district'),
-          'postalCode' => $this->fallbackValue($this->sanitizeNumber($billingAddress, 'billingAddressPostalCode'), $this->senderAddress, 'postalCode'),
-          'city'       => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressCity'), $this->senderAddress, 'city'),
-          'state'      => strtoupper($this->fallbackValue($this->checkValue($billingAddress, 'billingAddressState'), $this->senderAddress, 'state')),
-          'country'    => 'BRA',
+            'street' => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressStreet'), $this->senderAddress, 'street'),
+            'number' => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressNumber'), $this->senderAddress, 'number'),
+            'complement' => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressComplement'), $this->senderAddress, 'complement'),
+            'district' => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressDistrict'), $this->senderAddress, 'district'),
+            'postalCode' => $this->fallbackValue($this->sanitizeNumber($billingAddress, 'billingAddressPostalCode'), $this->senderAddress, 'postalCode'),
+            'city' => $this->fallbackValue($this->sanitize($billingAddress, 'billingAddressCity'), $this->senderAddress, 'city'),
+            'state' => strtoupper($this->fallbackValue($this->checkValue($billingAddress, 'billingAddressState'), $this->senderAddress, 'state')),
+            'country' => 'BRA',
         ];
 
         $this->validateBillingAddress($billingAddress);
@@ -320,13 +320,13 @@ class PagSeguroRecorrente extends PagSeguroClient
     private function validateBillingAddress(array $billingAddress)
     {
         $rules = [
-          'street'     => 'required|max:80',
-          'number'     => 'required|max:20',
-          'complement' => 'max:40',
-          'district'   => 'required|max:60',
-          'postalCode' => 'required|digits:8',
-          'city'       => 'required|min:2|max:60',
-          'state'      => 'required|min:2|max:2',
+            'street' => 'required|max:80',
+            'number' => 'required|max:20',
+            'complement' => 'max:40',
+            'district' => 'required|max:60',
+            'postalCode' => 'required|digits:8',
+            'city' => 'required|min:2|max:60',
+            'state' => 'required|min:2|max:2',
         ];
 
         $this->validate($billingAddress, $rules);
@@ -348,7 +348,7 @@ class PagSeguroRecorrente extends PagSeguroClient
 
         $data = $this->formatPreApprovalData($paymentSettings);
 
-        return (string) $this->sendJsonTransaction($data, $this->url['preApproval'])->code;
+        return (string)$this->sendJsonTransaction($data, $this->url['preApproval'])->code;
     }
 
     /**
@@ -367,7 +367,7 @@ class PagSeguroRecorrente extends PagSeguroClient
 
         $data = $this->formatPreApprovalPaymentMethodData($paymentSettings);
 
-        return (string) $this->sendJsonTransaction($data, $this->url['preApproval'].'/'.$this->plan.'/payment-method', 'PUT');
+        return (string)$this->sendJsonTransaction($data, $this->url['preApproval'] . '/' . $this->plan . '/payment-method', 'PUT');
     }
 
     /**
@@ -378,7 +378,7 @@ class PagSeguroRecorrente extends PagSeguroClient
     private function validatePaymentSettings(array $paymentSettings)
     {
         $rules = [
-          'creditCardToken' => 'required',
+            'creditCardToken' => 'required',
         ];
 
         $this->validate($paymentSettings, $rules);
@@ -400,24 +400,24 @@ class PagSeguroRecorrente extends PagSeguroClient
     {
         $this->senderInfo['phone'] = [
             'areaCode' => $this->senderInfo['senderAreaCode'],
-            'number'   => $this->senderInfo['senderPhone'],
+            'number' => $this->senderInfo['senderPhone'],
         ];
 
         $this->creditCardHolder['phone'] = [
             'areaCode' => $this->creditCardHolder['creditCardHolderAreaCode'],
-            'number'   => $this->creditCardHolder['creditCardHolderPhone'],
+            'number' => $this->creditCardHolder['creditCardHolderPhone'],
         ];
 
         if (!empty($this->senderInfo['senderCPF'])) {
             $this->senderInfo['documents'][0] = [
-                'type'  => 'CPF',
+                'type' => 'CPF',
                 'value' => $this->senderInfo['senderCPF'],
             ];
 
             unset($this->senderInfo['senderCPF']);
         } else {
             $this->senderInfo['documents'][0] = [
-                'type'  => 'CNPJ',
+                'type' => 'CNPJ',
                 'value' => $this->senderInfo['senderCNPJ'],
             ];
 
@@ -425,7 +425,7 @@ class PagSeguroRecorrente extends PagSeguroClient
         }
 
         $this->creditCardHolder['documents'][0] = [
-            'type'  => 'CPF',
+            'type' => 'CPF',
             'value' => $this->creditCardHolder['creditCardHolderCPF'],
         ];
 
@@ -436,13 +436,13 @@ class PagSeguroRecorrente extends PagSeguroClient
         unset($this->creditCardHolder['creditCardHolderPhone']);
 
         $data = [
-            'reference'     => $this->reference,
-            'plan'          => $this->plan,
-            'sender'        => $this->senderInfo,
+            'reference' => $this->reference,
+            'plan' => $this->plan,
+            'sender' => $this->senderInfo,
             'paymentMethod' => [
-                'type'       => 'CREDITCARD',
+                'type' => 'CREDITCARD',
                 'creditCard' => [
-                    'token'  => $paymentSettings['creditCardToken'],
+                    'token' => $paymentSettings['creditCardToken'],
                     'holder' => $this->creditCardHolder,
                 ],
             ],
@@ -464,26 +464,26 @@ class PagSeguroRecorrente extends PagSeguroClient
     {
         $this->senderInfo['phone'] = [
             'areaCode' => $this->senderInfo['senderAreaCode'],
-            'number'   => $this->senderInfo['senderPhone'],
+            'number' => $this->senderInfo['senderPhone'],
         ];
 
         $this->creditCardHolder['phone'] = [
             'areaCode' => $this->creditCardHolder['creditCardHolderAreaCode'],
-            'number'   => $this->creditCardHolder['creditCardHolderPhone'],
+            'number' => $this->creditCardHolder['creditCardHolderPhone'],
         ];
 
         $this->creditCardHolder['billingAddress'] = $this->billingAddress;
 
         if (!empty($this->senderInfo['senderCPF'])) {
             $this->senderInfo['documents'][0] = [
-                'type'  => 'CPF',
+                'type' => 'CPF',
                 'value' => $this->senderInfo['senderCPF'],
             ];
 
             unset($this->senderInfo['senderCPF']);
         } else {
             $this->senderInfo['documents'][0] = [
-                'type'  => 'CNPJ',
+                'type' => 'CNPJ',
                 'value' => $this->senderInfo['senderCNPJ'],
             ];
 
@@ -491,7 +491,7 @@ class PagSeguroRecorrente extends PagSeguroClient
         }
 
         $this->creditCardHolder['documents'][0] = [
-            'type'  => 'CPF',
+            'type' => 'CPF',
             'value' => $this->creditCardHolder['creditCardHolderCPF'],
         ];
 
@@ -502,14 +502,14 @@ class PagSeguroRecorrente extends PagSeguroClient
         unset($this->creditCardHolder['creditCardHolderPhone']);
 
         $data = [
-            'type'          => $this->type,
-            'sender'        => [
-                'ip'         => $this->senderInfo['ip'],
-                'hash'       => $this->senderInfo['hash'],
+            'type' => $this->type,
+            'sender' => [
+                'ip' => $this->senderInfo['ip'],
+                'hash' => $this->senderInfo['hash'],
             ],
-            'creditCard'    => [
-                'token'          => $paymentSettings['creditCardToken'],
-                'holder'         => $this->creditCardHolder,
+            'creditCard' => [
+                'token' => $paymentSettings['creditCardToken'],
+                'holder' => $this->creditCardHolder,
             ],
         ];
 
@@ -528,7 +528,19 @@ class PagSeguroRecorrente extends PagSeguroClient
         return $this->sendTransaction([
             'email' => $this->email,
             'token' => $this->token,
-        ], $this->url['preApprovalCancel'].$preApprovalCode, false);
+        ], $this->url['preApprovalCancel'] . $preApprovalCode, false);
+    }
+
+    /**
+     * Recupera um pagamento recorrente.
+     *
+     * @param string $preApprovalCode
+     *
+     * @return \SimpleXMLElement
+     */
+    public function getPreApproval($preApprovalCode)
+    {
+        return $this->sendJsonTransaction([], $this->url['preApproval'] . '/' . $preApprovalCode, 'GET');
     }
 
     /**
@@ -540,6 +552,6 @@ class PagSeguroRecorrente extends PagSeguroClient
      */
     public function paymentOrders($preApprovalCode)
     {
-        return $this->sendJsonTransaction([], $this->url['preApproval'].'/'.$preApprovalCode.'/payment-orders', 'GET');
+        return $this->sendJsonTransaction([], $this->url['preApproval'] . '/' . $preApprovalCode . '/payment-orders', 'GET');
     }
 }
